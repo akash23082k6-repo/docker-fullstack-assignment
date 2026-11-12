@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker Full Stack Application</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            width: 350px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #222;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        #message {
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h2>Submit Your Details</h2>
+
+        <form id="submissionForm">
+
+            <input
+                type="text"
+                name="name"
+                placeholder="Enter your name"
+                required
+            >
+
+            <input
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                required
+            >
+
+            <textarea
+                name="message"
+                placeholder="Enter your message"
+                required
+            ></textarea>
+
+            <button type="submit">Submit</button>
+
+        </form>
+
+        <p id="message"></p>
+
+    </div>
+
+    <script>
+        const form = document.getElementById("submissionForm");
+        const message = document.getElementById("message");
+
+        form.addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+            const formData = Object.fromEntries(
+                new FormData(form).entries()
+            );
+
+            message.textContent = "Submitting...";
+
+            try {
+
+                const response = await fetch("/submit", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.message || "Submission failed");
+                }
+
+                message.textContent =
+                    result.message || "Data submitted successfully";
+
+                message.style.color = "green";
+                form.reset();
+
+            } catch (error) {
+
+                message.textContent = error.message;
+                message.style.color = "red";
+
+            }
+
+        });
+    </script>
+
+</body>
+</html>

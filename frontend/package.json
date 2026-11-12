@@ -1,0 +1,13 @@
+
+{
+  "name": "full-stack-docker-frontend",
+  "version": "1.0.0",
+  "description": "Node.js Express frontend application",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

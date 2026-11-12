@@ -1,0 +1,28 @@
+
+services:
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend-container
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - fullstack-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend-container
+    ports:
+      - "5000:5000"
+    networks:
+      - fullstack-network
+
+networks:
+  fullstack-network:
+    driver: bridge
